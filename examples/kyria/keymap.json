@@ -2,48 +2,48 @@
     "number_of_keys": 50,
     "layer.empty": {
         "name": "EMPTY",
-        "keymap": "EMPTY.layer"
+        "layer": "EMPTY.layer"
     },
     "layer.template": {
         "name": "TEMPLATE",
-        "keymap": "TEMPLATE.layer"
+        "layer": "TEMPLATE.layer"
     },
     "layers": [
         {
             "name": "_QWERTY",
-            "keymap": "QWERTY.layer"
+            "layer": "QWERTY.layer"
         },
         {
             "name": "_RSTHD",
-            "keymap": "RSTHD.layer"
+            "layer": "RSTHD.layer"
         },
         {
             "name": "_QWERTY_CAPS",
-            "keymap": "QWERTY_CAPS.layer"
+            "layer": "QWERTY_CAPS.layer"
         },
         {
             "name": "_RSTHD_CAPS",
-            "keymap": "RSTHD_CAPS.layer"
+            "layer": "RSTHD_CAPS.layer"
         },
         {
             "name": "_NUM",
-            "keymap": "NUM.layer"
+            "layer": "NUM.layer"
         },
         {
             "name": "_MOUSE",
-            "keymap": "MOUSE.layer"
+            "layer": "MOUSE.layer"
         },
         {
             "name": "_SYM",
-            "keymap": "SYM.layer"
+            "layer": "SYM.layer"
         },
         {
             "name": "_NAV",
-            "keymap": "NAV.layer"
+            "layer": "NAV.layer"
         },
         {
             "name": "_RAISE",
-            "keymap": "RAISE.layer"
+            "layer": "RAISE.layer"
         }
     ],
     "symbol_to_keycode": {
