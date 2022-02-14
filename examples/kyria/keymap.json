@@ -1,0 +1,186 @@
+{
+    "number_of_keys": 50,
+    "layer.empty": {
+        "name": "EMPTY",
+        "keymap": "EMPTY.layer"
+    },
+    "layer.template": {
+        "name": "TEMPLATE",
+        "keymap": "TEMPLATE.layer"
+    },
+    "layers": [
+        {
+            "name": "_QWERTY",
+            "keymap": "QWERTY.layer"
+        },
+        {
+            "name": "_RSTHD",
+            "keymap": "RSTHD.layer"
+        },
+        {
+            "name": "_QWERTY_CAPS",
+            "keymap": "QWERTY_CAPS.layer"
+        },
+        {
+            "name": "_RSTHD_CAPS",
+            "keymap": "RSTHD_CAPS.layer"
+        },
+        {
+            "name": "_NUM",
+            "keymap": "NUM.layer"
+        },
+        {
+            "name": "_MOUSE",
+            "keymap": "MOUSE.layer"
+        },
+        {
+            "name": "_SYM",
+            "keymap": "SYM.layer"
+        },
+        {
+            "name": "_NAV",
+            "keymap": "NAV.layer"
+        },
+        {
+            "name": "_RAISE",
+            "keymap": "RAISE.layer"
+        }
+    ],
+    "symbol_to_keycode": {
+        "": "KC_TRANS",
+        "Q": "LSFT(KC_Q)",
+        "W": "LSFT(KC_W)",
+        "E": "LSFT(KC_E)",
+        "R": "LSFT(KC_R)",
+        "T": "LSFT(KC_T)",
+        "Y": "LSFT(KC_Y)",
+        "U": "LSFT(KC_U)",
+        "I": "LSFT(KC_I)",
+        "O": "LSFT(KC_O)",
+        "P": "LSFT(KC_P)",
+        "A": "LSFT(KC_A)",
+        "S": "LSFT(KC_S)",
+        "D": "LSFT(KC_D)",
+        "F": "LSFT(KC_F)",
+        "G": "LSFT(KC_G)",
+        "H": "LSFT(KC_H)",
+        "J": "LSFT(KC_J)",
+        "K": "LSFT(KC_K)",
+        "L": "LSFT(KC_L)",
+        "Z": "LSFT(KC_Z)",
+        "C": "LSFT(KC_C)",
+        "V": "LSFT(KC_V)",
+        "B": "LSFT(KC_B)",
+        "N": "LSFT(KC_N)",
+        "M": "LSFT(KC_M)",
+        "q": "KC_Q",
+        "w": "KC_W",
+        "e": "KC_E",
+        "r": "KC_R",
+        "t": "KC_T",
+        "y": "KC_Y",
+        "u": "KC_U",
+        "i": "KC_I",
+        "o": "KC_O",
+        "p": "KC_P",
+        "a": "KC_A",
+        "s": "KC_S",
+        "d": "KC_D",
+        "f": "KC_F",
+        "g": "KC_G",
+        "h": "KC_H",
+        "j": "KC_J",
+        "k": "KC_K",
+        "l": "KC_L",
+        ":;": "KC_SCLN",
+        "z": "KC_Z",
+        "|": "KC_|",
+        "c": "KC_C",
+        "v": "KC_V",
+        "b": "KC_B",
+        "n": "KC_N",
+        "m": "KC_M",
+        "?,": "KC_COMMA_QUES",
+        "!.": "KC_DOT_EXCL",
+        "_": "KC_UNDS",
+        "Space": "KC_SPACE",
+        "Mouse": "LT(_MOUSE)",
+        "SmartNum": "KC_FNUM",
+        "Nav": "KC_FNAV",
+        "Sym": "KC_FSYM",
+        "SmartCaps": "KC_FCAPS",
+        "⌘": "KC_LGUI",
+        "⌥": "KC_LALT",
+        "^": "KC_LCTRL",
+        "⇧": "KC_LSFT",
+        "PWD": "KC_PASSWORD",
+        "F1": "KC_F1",
+        "F2": "KC_F2",
+        "F3": "KC_F3",
+        "F4": "KC_F4",
+        "F5": "KC_F5",
+        "F6": "KC_F6",
+        "F7": "KC_F7",
+        "F8": "KC_F8",
+        "F9": "KC_F9",
+        "F10": "KC_F10",
+        "F11": "KC_F11",
+        "F12": "KC_F12",
+        "EE": "SH_TG",
+        "Esc": "KC_ESC",
+        "NDT": "KC_OS_NDT",
+        "PDT": "KC_OS_PDT",
+        "Redo": "KC_OS_REDO",
+        "Undo": "KC_OS_UNDO",
+        "Cut": "KC_OS_CUT",
+        "Copy": "KC_OS_COPY",
+        "Paste": "KC_OS_PASTE",
+        "Close": "KC_OS_CLOSE",
+        "Tab": "KC_TAB",
+        "⏎": "KC_ENTER",
+        "⌫": "KC_BSPACE",
+        "⌦": "KC_DELETE",
+        "Ins": "KC_INSERT",
+        "←": "KC_LEFT",
+        "→": "KC_RIGHT",
+        "↑": "KC_UP",
+        "↓": "KC_DOWN",
+        "⇤": "KC_HOME",
+        "⇥": "KC_END",
+        "⇞": "KC_PGUP",
+        "⇟": "KC_PGDOWN",
+        "\"": "KC_DQUOTE",
+        "`": "KC_GRAVE",
+        "'": "KC_QUOTE"
+    },
+    "keymap.c.pre": [
+        "#include QMK_KEYBOARD_H",
+        "#include \"layers.h\"",
+        "#include \"cukey.h\"",
+        "",
+        "#define KC_TRANS KC_TRANSPARENT",
+        "",
+        "const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {"
+    ],
+    "keymap.c.layer": [
+        "    [${LAYER_NAME}] = LAYOUT(",
+        "        ____000____, ____001____, ____002____, ____003____, ____004____, ____005____,                                                     ____006____, ____007____, ____008____, ____009____, ____010____, ____011____,",
+        "        ____012____, ____013____, ____014____, ____015____, ____016____, ____017____,                                                     ____018____, ____019____, ____020____, ____021____, ____022____, ____023____,",
+        "        ____024____, ____025____, ____026____, ____027____, ____028____, ____029____, ____030____, ____031____, ____032____, ____033____, ____034____, ____035____, ____036____, ____037____, ____038____, ____039____,",
+        "                                  ____040____, ____041____, ____042____, ____043____, ____044____, ____045____, ____046____, ____047____, ____048____, ____049____",
+        "    ),"
+    ],
+    "keymap.c.post": [
+        "};"
+    ],
+    "layers.h.pre": [
+        "#pragma once",
+        "",
+        "enum layers {"
+    ],
+    "layers.h.post": [
+        "};"
+    ]
+
+}
+

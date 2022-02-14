@@ -1,0 +1,21 @@
+#ignore all files
+*
+#do scan all folders
+!*/
+
+tags
+*.exe
+*.exe~
+
+.git/
+.vscode/
+.build/
+
+#except the following files
+!*.go
+!*.md
+!*.json
+!*.layer
+
+!*.gitignore
+
