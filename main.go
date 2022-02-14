@@ -53,10 +53,15 @@ type layer_t struct {
 }
 
 type keymap_t struct {
-	NumberOfKeys    int               `json:"number_of_keys"`
+	NumberOfKeys int `json:"number_of_keys"`
+
+	KeymapCFilename   string `json:"keymap.c"`
+	KeymapSVGFilename string `json:"keymap.svg"`
+	LayersHFilename   string `json:"layers.h"`
+
 	SymbolToKeycode map[string]string `json:"symbol_to_keycode"`
-	Reference       layer_t           `json:"layer.empty"`
-	Template        layer_t           `json:"layer.template"`
+	Empty           layer_t           `json:"layer.empty"`
+	Reference       layer_t           `json:"layer.reference"`
 	Layers          []layer_t         `json:"layers"`
 	Keymap_C_Pre    []string          `json:"keymap.c.pre"`
 	Keymap_C_Layer  []string          `json:"keymap.c.layer"`
@@ -106,23 +111,23 @@ func readKeymapFile(filename string) (*keymap_t, error) {
 }
 
 // filter out characters from a layer that are in the reference layer
-func filterCharactersFromLayer(reference, layer [][]rune) ([][]rune, error) {
+func filterCharactersFromLayer(reference, layer *layer_t) error {
 	// loop through the reference layer
-	for i := 0; i < len(reference) && i < len(layer); i++ {
-		for k := 0; k < len(reference[i]) && k < len(layer[i]); k++ {
+	for i := 0; i < len(reference.Lines) && i < len(layer.Lines); i++ {
+		for k := 0; k < len(reference.Lines[i]) && k < len(layer.Lines[i]); k++ {
 			// if the characters match, replace the character in the layer with a space
-			if reference[i][k] == layer[i][k] {
-				layer[i][k] = ' '
-			} else if reference[i][k] != ' ' {
+			if reference.Lines[i][k] == layer.Lines[i][k] {
+				layer.Lines[i][k] = ' '
+			} else if reference.Lines[i][k] != ' ' {
 				// if the characters don't match, but the reference character is not a space, return an error
 				// that includes the mismatching characters as well as the line and character position
-				return nil, fmt.Errorf("character mismatch at line %d, character %d: %c != %c", i, k, reference[i][k], layer[i][k])
+				return fmt.Errorf("layer %s, character mismatch at line %d, character %d: %c != %c", layer.Name, i, k, reference.Lines[i][k], layer.Lines[i][k])
 			}
 		}
 	}
 
 	// return the template layer
-	return layer, nil
+	return nil
 }
 
 //  write a layer to a file
@@ -172,7 +177,7 @@ func mainReturnWithCode() error {
 		return err
 	}
 
-	keymap.Template.Lines, err = readLayerFile(inputFolder + "/" + keymap.Template.Filename)
+	keymap.Empty.Lines, err = readLayerFile(inputFolder + "/" + keymap.Empty.Filename)
 	if err != nil {
 		return err
 	}
@@ -182,7 +187,7 @@ func mainReturnWithCode() error {
 		return err
 	}
 
-	keymap.Template.Lines, err = filterCharactersFromLayer(keymap.Reference.Lines, keymap.Template.Lines)
+	err = filterCharactersFromLayer(&keymap.Empty, &keymap.Reference)
 	if err != nil {
 		return err
 	}
@@ -195,7 +200,7 @@ func mainReturnWithCode() error {
 		if err != nil {
 			return err
 		}
-		layer.Lines, err = filterCharactersFromLayer(keymap.Reference.Lines, layer.Lines)
+		err = filterCharactersFromLayer(&keymap.Empty, layer)
 		if err != nil {
 			return err
 		}
@@ -215,24 +220,24 @@ func mainReturnWithCode() error {
 	//   for each layer append the collected string to the key with the key index
 
 	// loop through the template layer
-	for i := 0; i < len(keymap.Template.Lines); i++ {
+	for i := 0; i < len(keymap.Reference.Lines); i++ {
 		// loop through the characters on the line
-		for j := 0; j < len(keymap.Template.Lines[i]); j++ {
+		for j := 0; j < len(keymap.Reference.Lines[i]); j++ {
 			// if the character is a digit
-			if keymap.Template.Lines[i][j] >= '0' && keymap.Template.Lines[i][j] <= '9' {
+			if keymap.Reference.Lines[i][j] >= '0' && keymap.Reference.Lines[i][j] <= '9' {
 				// scan forward until a non-digit is found
-				for k := j + 1; k < len(keymap.Template.Lines[i]); k++ {
+				for k := j + 1; k < len(keymap.Reference.Lines[i]); k++ {
 					// if the character is not a digit
-					if keymap.Template.Lines[i][k] < '0' || keymap.Template.Lines[i][k] > '9' {
-						keyStr := string(keymap.Template.Lines[i][j:k])
-						fmt.Printf("keyStr: %s\n", keyStr)
+					if keymap.Reference.Lines[i][k] < '0' || keymap.Reference.Lines[i][k] > '9' {
+						keyStr := string(keymap.Reference.Lines[i][j:k])
+						//fmt.Printf("keyStr: %s\n", keyStr)
 
 						// convert the collected digits to a number and use that as the key index
 						keyIndex, err := strconv.Atoi(keyStr)
 						if err != nil {
 							return err
 						}
-						fmt.Printf("%d: %s\n", keyIndex, keyStr)
+						//fmt.Printf("%d: %s\n", keyIndex, keyStr)
 
 						// for each layer append the collected string to the key with the key index
 						for l := 0; l < len(keymap.Layers); l++ {
@@ -274,6 +279,7 @@ func mainReturnWithCode() error {
 				if !exists {
 					// return fmt.Errorf("keycode not found for key %s", key.KeyText)
 					key.Keycode = "????"
+					fmt.Println("keycode not found for key", key.KeyText)
 				} else {
 					key.Keycode = keycode
 				}
@@ -282,7 +288,7 @@ func mainReturnWithCode() error {
 	}
 
 	// create and open keymap.c in output folder
-	file, err := os.Create(outputFolder + "/keymap.c")
+	file, err := os.Create(outputFolder + "/" + keymap.KeymapCFilename)
 	if err != nil {
 		return err
 	}
@@ -311,7 +317,7 @@ func mainReturnWithCode() error {
 	}
 
 	// create and open layers.h in output folder
-	file, err = os.Create(outputFolder + "/layers.h")
+	file, err = os.Create(outputFolder + "/" + keymap.LayersHFilename)
 	if err != nil {
 		return err
 	}
